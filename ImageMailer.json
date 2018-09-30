@@ -2,18 +2,18 @@
     "logLevel"                     : 2
   , "camera"                       : {
 	  "model"                      : "TV-IP422W"
-  ,   "hostname"                   : "http://192.168.1.253:5000"
+  ,   "hostname"                   : "http://ipaddess:port"
   ,   "snapshotPath"               : "/cgi/jpg/image.cgi"
   ,   "username"                   : "admin"
-  ,   "password"                   : "Only4jinji"
+  ,   "password"                   : "password"
   }
   , "email"                        : { 
-      "service"                    : "zoho"
-  ,   "sender"	                   : "staddlestones@golden-hind.com"
-  ,   "password"                   : "PixFromMum"
-  ,   "recipient"                  : "mark.drake@golden-hind.com"
-  ,   "subject"                    : "Garrick Green"
-  ,   "filenamePrefix"             : "Kitchen"
+      "service"                    : "mailservice"
+  ,   "sender"	                   : "sender@gexample.com"
+  ,   "password"                   : "password"
+  ,   "recipient"                  : "target@example.com"
+  ,   "subject"                    : "Picture from Camera"
+  ,   "filenamePrefix"             : "IMG"
   }
   , "schedule"                     : {
        "times"                     : ["08:30", "17:30", "21:00"] 
