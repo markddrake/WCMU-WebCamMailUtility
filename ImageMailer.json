@@ -1,0 +1,21 @@
+{
+    "logLevel"                     : 2
+  , "camera"                       : {
+	  "model"                      : "TV-IP422W"
+  ,   "hostname"                   : "http://ipaddess:port"
+  ,   "snapshotPath"               : "/cgi/jpg/image.cgi"
+  ,   "username"                   : "admin"
+  ,   "password"                   : "password"
+  }
+  , "email"                        : { 
+      "service"                    : "mailservice"
+  ,   "sender"	                   : "sender@gexample.com"
+  ,   "password"                   : "password"
+  ,   "recipient"                  : "target@example.com"
+  ,   "subject"                    : "Picture from Camera"
+  ,   "filenamePrefix"             : "IMG"
+  }
+  , "schedule"                     : {
+       "times"                     : ["08:30", "17:30", "21:00"] 
+  }
+}
