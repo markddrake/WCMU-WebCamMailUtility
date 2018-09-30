@@ -1,0 +1,21 @@
+{
+    "logLevel"                     : 2
+  , "camera"                       : {
+	  "model"                      : "TV-IP422W"
+  ,   "hostname"                   : "http://192.168.1.253:5000"
+  ,   "snapshotPath"               : "/cgi/jpg/image.cgi"
+  ,   "username"                   : "admin"
+  ,   "password"                   : "Only4jinji"
+  }
+  , "email"                        : { 
+      "service"                    : "zoho"
+  ,   "sender"	                   : "staddlestones@golden-hind.com"
+  ,   "password"                   : "PixFromMum"
+  ,   "recipient"                  : "mark.drake@golden-hind.com"
+  ,   "subject"                    : "Garrick Green"
+  ,   "filenamePrefix"             : "Kitchen"
+  }
+  , "schedule"                     : {
+       "times"                     : ["08:30", "17:30", "21:00"] 
+  }
+}
