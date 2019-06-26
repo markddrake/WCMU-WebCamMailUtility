@@ -1,16 +1,3 @@
-/* ================================================  
- *    
- * Copyright (c) 2016 Oracle and/or its affiliates.  All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * ================================================
- */
-
 "use strict";
  
 var http = require('http');
@@ -23,9 +10,6 @@ var ImageMailerConfig
 var EventSchedule
 var LastInterval
 
-function getCameraSnapshotURL() {
-	return  ImageMailerConfig.camera.hostname + ImageMailerConfig.camera.snapshotPath;
-}
 
 function initializeMailer(service,username,password) {
 
@@ -82,20 +66,29 @@ function processSnapshot(requestOptions, response, body, resolve, reject) {
   }
 }
     
-function captureSnapshot(url,username,password) {
+function captureSnapshot(camera) {
 
   var moduleId = 'captureSnapshot()';
   
   var requestOptions = {
   	method   : 'GET'
-  , uri      : url
-  , headers  : {  
-              "Authorization" : "Basic " + new Buffer(username + ":" + password).toString("base64")
-             }
-  , encoding :  null	
+  , uri      : camera.hostname + camera.snapshotPath
+  , qs       : camera.qs ? camera.qs : {}
+  , encoding : null	
   , time     : true
   };
 
+  switch (camera.authenticationMode) {
+    case 'basic':
+      requestOptions.headers = {"Authorization" : "Basic " + new Buffer(camera.username + ":" + camera.password).toString("base64")}
+      break;
+    case 'foscam' :
+      requestOptions.qs.usr = camera.username;
+      requestOptions.qs.pwd = camera.password;
+      break;
+    default:
+  }
+       
   return new Promise(function(resolve, reject) {
     writeLogEntry(3,'Executing Promise');
     request(requestOptions, function(error, response, body) {
@@ -147,7 +140,8 @@ var emailSnapshot = function () {
   var moduleId = "emailSnapshot";  
    
   try {   
-    captureSnapshot(getCameraSnapshotURL(),ImageMailerConfig.camera.username,ImageMailerConfig.camera.password).then(function(resp){
+    const camera = ImageMailerConfig[ImageMailerConfig.activeCameras[0]]
+    captureSnapshot(camera).then(function(resp){
       writeLogEntry(1,moduleId,"Bytes Recieved: " + resp.body.length);
       mailSnapshot(resp.body,ImageMailerConfig.email.sender,ImageMailerConfig.email.recipient,ImageMailerConfig.email.subject,ImageMailerConfig.email.filenamePrefix)
     }).catch(function(e) {
@@ -269,6 +263,21 @@ function main() {
 	loadConfigurationFile();
     initializeMailer(ImageMailerConfig.email.service,ImageMailerConfig.email.sender,ImageMailerConfig.email.password);
 	startIntervalTimer(emailSnapshot);
+  } catch (e) {
+	writeLogEntry(0,moduleId,"Uncaught Error");
+	writeLogEntry(0,moduleId,e.stack);
+  }
+}
+
+function test() {
+
+  var moduleId = "test"
+	
+  try {
+	loadConfigurationFile();
+    initializeMailer(ImageMailerConfig.email.service,ImageMailerConfig.email.sender,ImageMailerConfig.email.password);
+    emailSnapshot()
+	
   } catch (e) {
 	writeLogEntry(0,moduleId,"Uncaught Error");
 	writeLogEntry(0,moduleId,e.stack);

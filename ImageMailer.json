@@ -1,0 +1,32 @@
+{
+    "logLevel"                     : 2
+  , "activeCameras"                : ["R4"]
+  , "TV-IP422W"                    : {
+      "model"                      : "Trendnet TV-IP422W"
+  ,   "hostname"                   : "http://192.168.1.253:5000"
+  ,   "snapshotPath"               : "/cgi/jpg/image.cgi"
+  ,   "authenticationMode"         : "basic"
+  ,   "username"                   : "username"
+  ,   "password"                   : "password"
+  }
+  , "R4"                           : {
+      "model"                      : "Foscam R4"
+  ,   "hostname"                   : "http://192.168.1.242:88"
+  ,   "snapshotPath"               : "/cgi-bin/CGIProxy.fcgi"
+  ,   "qs"                         : { "cmd" : "snapPicture2" }
+  ,   "authenticationMode"         : "foscam"
+  ,   "username"                   : "username"
+  ,   "password"                   : "password"
+  }
+  , "email"                        : {
+      "service"                    : "servicename"
+  ,   "sender"                     : "email-username@email-service.com"
+  ,   "password"                   : "email-servicePassword"
+  ,   "recipient"                  : "yourname@your-address.com"
+  ,   "subject"                    : "Pictures from Camera001"
+  ,   "filenamePrefix"             : "Camera001"
+  }
+  , "schedule"                     : {
+       "times"                     : ["08:30", "17:30", "22:35"]
+  }
+}
